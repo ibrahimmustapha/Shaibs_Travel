@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shaib's Travel — Curated Adventures & Seamless Journeys</title>
+    <meta
+      name="description"
+      content="Discover dream destinations with Shaib's Travel. Curated holidays, corporate travel programs, and educational tours designed for unforgettable journeys."
+    />
+    <meta
+      name="keywords"
+      content="travel agency, luxury travel, business travel, educational tours, holiday packages, destination planning"
+    />
+    <meta property="og:title" content="Shaib's Travel — Curated Adventures & Seamless Journeys" />
+    <meta
+      property="og:description"
+      content="From exotic getaways to board-level retreats and study tours, discover expertly curated travel experiences with Shaib's Travel."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://shaibstravel.com" />
+    <meta name="theme-color" content="#0b3d59" />
+    <script>
+      (function () {
+        const storedTheme = window.localStorage?.getItem('shaibs-theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        const theme = storedTheme || (prefersDark ? 'dark' : 'light');
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
