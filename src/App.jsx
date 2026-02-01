@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import logoDark from "./assets/1.png";
 import logoLight from "./assets/2.png";
+import heroVideo from "./assets/hero.mp4";
 
 const navLinks = [
   { label: "Experiences", href: "#experiences" },
@@ -136,33 +137,34 @@ const visaHighlights = [
 
 const testimonials = [
   {
-    name: "Kemi & Femi",
-    trip: "Anniversary escape",
+    name: "Mr Felix ",
+    trip: "Graduate School Application",
     quote:
-      "Imasha mapped every moment with so much breathing room. The floating dinner on Capri felt like our own film scene.",
+      "I like the speed and the constant update and consistent communication. I really appreciate",
   },
   {
-    name: "Zenith Studio",
-    trip: "Creative sprint in Tokyo",
+    name: "Mrs Dinah Mensah",
+    trip: "Flight And Acomodation",
     quote:
-      "Workshops, recording spaces, and wellness breaks were choreographed seamlessly. Our jet lag barely existed.",
+      "Thank you so much for the seamless service you provided in booking my trip from Accra to JFK New York , including picking me up and ensuring I arrived safely at my destination at a very affordable rate.",
   },
   {
-    name: "Professor Adaeze",
-    trip: "Scholars residency",
+    name: "Abdul Rauf Safianu",
+    trip: "School Application",
     quote:
-      "Students met scientists, hiked, and journaled without us worrying about logistics. Calm energy from start to finish.",
+      "I am super marveled about how fast your team is moving with my graduate school application in the US. I am also very impressed with how well you communicate and make me informed about every step along the way. As for the rate of your service, the least said the better. You are just the best!",
   },
 ];
 
 const contactChannels = [
   { label: "Studio", value: "Tetegu, Accra" },
   { label: "Email", value: "hello@imashatravel.com" },
-  { label: "Phone", value: "+234 803 000 4421" },
-  { label: "WhatsApp", value: "+234 803 000 4421 (tap chat bubble)" },
+  { label: "Phone", value: "+234 054 781 2542 " },
+  { label: "WhatsApp", value: "+1 330 237 0886 (tap chat bubble)" },
 ];
 
 export default function App() {
+  const heroVideoRef = useRef(null);
   const [theme, setTheme] = useState(() => {
     if (typeof window === "undefined") return "light";
     const stored = window.localStorage.getItem("imasha-theme");
@@ -178,7 +180,10 @@ export default function App() {
     window.localStorage.setItem("imasha-theme", theme);
     const favicon = document.querySelector("link[rel='icon']");
     if (favicon) {
-      favicon.setAttribute("href", theme === "dark" ? "/logo-dark.png" : "/logo-light.png");
+      favicon.setAttribute(
+        "href",
+        theme === "dark" ? "/logo-dark.png" : "/logo-light.png"
+      );
     }
   }, [theme]);
 
@@ -199,6 +204,25 @@ export default function App() {
       .querySelectorAll("[data-animate]")
       .forEach((el) => observer.observe(el));
     return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video || typeof IntersectionObserver === "undefined") return;
+
+    const playInView = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    playInView.observe(video);
+    return () => playInView.disconnect();
   }, []);
 
   const toggleTheme = () =>
@@ -246,20 +270,28 @@ export default function App() {
 
       <main>
         <section id="hero" className="hero" data-animate>
+          <div className="hero-media" aria-hidden="true">
+            <video
+              ref={heroVideoRef}
+              className="hero-video"
+              autoPlay
+              muted
+              loop
+              playsInline
+              preload="metadata"
+              src={heroVideo}
+            />
+            <div className="hero-video-overlay" />
+          </div>
           <div className="orb orb-one" aria-hidden="true" />
           <div className="orb orb-two" aria-hidden="true" />
           <div className="container hero-grid">
             <div className="hero-copy">
               <p className="eyebrow">Imasha Consults</p>
-              <h1>
-                Slow, thoughtful travel experiences with airy aesthetics,
-                mindful pacing, and soulful hosts.
-              </h1>
+              <h1>Calm travel, planned with care.</h1>
               <p className="hero-sub">
-                We craft calm journeys for couples, teams, and learning
-                groups—balancing restorative pauses with sensory-rich adventures
-                and guided visa support (F1, Schengen, B1/B2) so paperwork never
-                breaks your flow.
+                Custom trips for students, families, and teams with clear
+                timelines and visa guidance.
               </p>
               <div className="hero-actions">
                 <button
@@ -539,29 +571,69 @@ export default function App() {
       <footer className="site-footer" data-animate>
         <div className="container footer-inner">
           <div>
-            <span className="logo-mark">
+            <span className="logo-mark footer-logo">
               <img src={activeLogo} alt="Imasha Consults icon" />
             </span>
-            <p>
-              Imasha Consults curates light-filled travel for people who crave
-              intentional pauses.
-            </p>
+            <p>Imasha Consults curates calm, well-paced travel experiences.</p>
           </div>
           <div>
-            <h4>Hours</h4>
-            <p>Mon - Sat · 9am to 7pm WAT</p>
-            <p>Remote check-ins for active trips 24/7.</p>
+            <h4>Contact</h4>
+            <p>Tetegu, Accra</p>
+            <p>hello@imashatravel.com</p>
+            <p>+233 0547 812 542</p>
           </div>
           <div>
-            <h4>Connect</h4>
-            <a href="mailto:hello@imashatravel.com">hello@imashatravel.com</a>
-            <a
-              href="https://wa.me/2348030004421"
-              target="_blank"
-              rel="noreferrer"
-            >
-              WhatsApp concierge
-            </a>
+            <h4>Social</h4>
+            <div className="social-list">
+              <a
+                href="https://wa.me/2348030004421"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="WhatsApp"
+              >
+                <img
+                  className="social-icon"
+                  src="https://img.icons8.com/?size=100&id=16713&format=png&color=000000"
+                  alt="WhatsApp"
+                />
+              </a>
+              <a
+                href="https://www.tiktok.com/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="TikTok"
+              >
+                <img
+                  className="social-icon"
+                  src="https://img.icons8.com/?size=100&id=118640&format=png&color=000000"
+                  alt="TikTok"
+                />
+              </a>
+              <a
+                href="https://www.snapchat.com/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Snapchat"
+              >
+                <img
+                  className="social-icon"
+                  src="https://img.icons8.com/?size=100&id=KrtKMa6Fduil&format=png&color=000000"
+                  alt="Snapchat"
+                />
+              </a>
+              <a
+                href="https://www.facebook.com/"
+                target="_blank"
+                rel="noreferrer"
+                aria-label="Facebook"
+              >
+                <img
+                  className="social-icon"
+                  src="https://img.icons8.com/?size=100&id=13912&format=png&color=000000"
+                  alt="Facebook"
+                />
+              </a>
+            </div>
           </div>
         </div>
         <p className="footer-note">
